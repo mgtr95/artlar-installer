@@ -127,8 +127,8 @@ class NewCommand extends Command
             '%s create-project %s %s %s --remove-vcs --prefer-dist --no-scripts',
             $composer,
             self::TEMPLATE_PACKAGE,
-            Process::escapeArgument($directory),
-            $version !== '' ? Process::escapeArgument($version) : '',
+            escapeshellarg($directory),
+            $version !== '' ? escapeshellarg($version) : '',
         );
 
         if ($input->getOption('from-git') || ! $this->packageIsOnPackagist()) {
@@ -137,23 +137,23 @@ class NewCommand extends Command
                 'url' => self::TEMPLATE_REPOSITORY,
             ], JSON_THROW_ON_ERROR);
 
-            $createProject .= ' --stability=dev --repository='.Process::escapeArgument($repository);
+            $createProject .= ' --stability=dev --repository='.escapeshellarg($repository);
         }
 
         $commands = [];
 
         if ($directory !== '.' && $input->getOption('force')) {
             $commands[] = PHP_OS_FAMILY === 'Windows'
-                ? sprintf('(if exist %s rd /s /q %s)', Process::escapeArgument($directory), Process::escapeArgument($directory))
-                : sprintf('rm -rf %s', Process::escapeArgument($directory));
+                ? sprintf('(if exist %s rd /s /q %s)', escapeshellarg($directory), escapeshellarg($directory))
+                : sprintf('rm -rf %s', escapeshellarg($directory));
         }
 
         $commands[] = trim(preg_replace('/\s+/', ' ', $createProject) ?? $createProject);
-        $commands[] = sprintf('%s run post-root-package-install -d %s', $composer, Process::escapeArgument($directory));
-        $commands[] = sprintf('%s %s key:generate --ansi', $phpBinary, Process::escapeArgument($directory.DIRECTORY_SEPARATOR.'artisan'));
+        $commands[] = sprintf('%s run post-root-package-install -d %s', $composer, escapeshellarg($directory));
+        $commands[] = sprintf('%s %s key:generate --ansi', $phpBinary, escapeshellarg($directory.DIRECTORY_SEPARATOR.'artisan'));
 
         if (PHP_OS_FAMILY !== 'Windows') {
-            $commands[] = sprintf('chmod 755 %s', Process::escapeArgument($directory.DIRECTORY_SEPARATOR.'artisan'));
+            $commands[] = sprintf('chmod 755 %s', escapeshellarg($directory.DIRECTORY_SEPARATOR.'artisan'));
         }
 
         $process = $this->runCommands($commands, $input, $output);
@@ -166,9 +166,9 @@ class NewCommand extends Command
 
         if ($input->getOption('git') && $this->gitIsAvailable() && $directory !== '.') {
             $this->runCommands([
-                sprintf('git -C %s init -q', Process::escapeArgument($directory)),
-                sprintf('git -C %s add -A', Process::escapeArgument($directory)),
-                sprintf('git -C %s commit -q -m %s', Process::escapeArgument($directory), Process::escapeArgument('Initial commit from artlar new')),
+                sprintf('git -C %s init -q', escapeshellarg($directory)),
+                sprintf('git -C %s add -A', escapeshellarg($directory)),
+                sprintf('git -C %s commit -q -m %s', escapeshellarg($directory), escapeshellarg('Initial commit from artlar new')),
             ], $input, $output);
         }
 
@@ -178,7 +178,7 @@ class NewCommand extends Command
                 $output->writeln(sprintf('  cd %s && cp -n .env.example .env 2>/dev/null; make up', $directory));
             } else {
                 $this->runCommands([
-                    sprintf('make -C %s up', Process::escapeArgument($directory)),
+                    sprintf('make -C %s up', escapeshellarg($directory)),
                 ], $input, $output);
             }
         }
@@ -216,7 +216,7 @@ class NewCommand extends Command
         $composerPath = getcwd().'/composer.phar';
 
         if (file_exists($composerPath)) {
-            return Process::escapeArgument($this->phpBinary()).' '.Process::escapeArgument($composerPath);
+            return escapeshellarg($this->phpBinary()).' '.escapeshellarg($composerPath);
         }
 
         return 'composer';
