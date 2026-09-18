@@ -2,6 +2,8 @@
 
 CLI to scaffold apps from [`mgtr95/artlar-boilerplate`](https://github.com/mgtr95/artlar-boilerplate).
 
+To deploy and manage Artlar apps on a VPS, use the panel at [`mgtr95/vpsops-panel-laravel`](https://github.com/mgtr95/vpsops-panel-laravel/).
+
 ## Requirements
 
 - PHP 8.2+
