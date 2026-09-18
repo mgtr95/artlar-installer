@@ -19,12 +19,12 @@ class NewCommand extends Command
     /**
      * Packagist / Composer package name of the application template.
      */
-    private const TEMPLATE_PACKAGE = 'mgtr95/art-lar-template';
+    private const TEMPLATE_PACKAGE = 'mgtr95/artlar-boilerplate';
 
     /**
      * Git repository used when the package is not yet on Packagist.
      */
-    private const TEMPLATE_REPOSITORY = 'https://github.com/mgtr95/art-lar-template.git';
+    private const TEMPLATE_REPOSITORY = 'https://github.com/mgtr95/artlar-boilerplate.git';
 
     protected function configure(): void
     {

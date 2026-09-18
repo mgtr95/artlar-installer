@@ -1,6 +1,6 @@
 # Artlar Installer
 
-CLI to scaffold apps from [`mgtr95/art-lar-template`](https://github.com/mgtr95/art-lar-template).
+CLI to scaffold apps from [`mgtr95/artlar-boilerplate`](https://github.com/mgtr95/artlar-boilerplate).
 
 ## Requirements
 
@@ -10,20 +10,17 @@ CLI to scaffold apps from [`mgtr95/art-lar-template`](https://github.com/mgtr95/
 
 ## Install
 
-Until this package is on Packagist:
-
-```bash
-composer global config repositories.artlar-installer vcs https://github.com/mgtr95/artlar-installer.git
-composer global require mgtr95/artlar-installer:dev-main
-```
-
-Once published on Packagist:
-
 ```bash
 composer global require mgtr95/artlar-installer
 ```
 
 Ensure Composer's global bin directory is on your `PATH` (often `~/.composer/vendor/bin` or `~/.config/composer/vendor/bin`).
+
+Until a stable tag exists:
+
+```bash
+composer global require mgtr95/artlar-installer:dev-main
+```
 
 ## Usage
 
@@ -38,15 +35,14 @@ Options:
 | `--docker` | Run `make up` after install |
 | `--no-docker` | Skip Docker |
 | `--git` | `git init` + initial commit |
-| `--dev` | Use `dev-main` of the template |
-| `--from-git` | Always pull the template via GitHub VCS |
+| `--dev` | Use `dev-main` of the boilerplate |
+| `--from-git` | Always pull the boilerplate via GitHub VCS |
 | `-f`, `--force` | Overwrite existing directory |
 
 Without the CLI:
 
 ```bash
-composer create-project mgtr95/art-lar-template my-app --stability=dev \
-  --repository='{"type":"vcs","url":"https://github.com/mgtr95/art-lar-template.git"}'
+composer create-project mgtr95/artlar-boilerplate my-app
 ```
 
 ## Local development of this installer
@@ -59,9 +55,9 @@ composer install
 
 ## Packagist
 
-Submit **both** packages when ready:
+Packages:
 
-1. `mgtr95/art-lar-template` (this template / `type: project`)
+1. `mgtr95/artlar-boilerplate` (`type: project`)
 2. `mgtr95/artlar-installer` (this CLI)
 
-After that, `composer global require mgtr95/artlar-installer` and `composer create-project mgtr95/art-lar-template` work without VCS repository config. The CLI auto-detects Packagist and drops the Git override when the template is published.
+Tag releases (`v1.0.0`, …) on both repos so Composer can install without `--stability=dev`. The CLI auto-detects Packagist and only falls back to the GitHub VCS URL when needed.
