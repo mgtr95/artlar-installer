@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+if (file_exists(__DIR__.'/../../../autoload.php')) {
+    require __DIR__.'/../../../autoload.php';
+} else {
+    require __DIR__.'/../vendor/autoload.php';
+}
+
+$app = new Symfony\Component\Console\Application('Artlar Installer', '1.0.0');
+
+$command = new Artlar\Installer\Console\NewCommand;
+
+if (method_exists($app, 'addCommand')) {
+    $app->addCommand($command);
+} else {
+    $app->add($command);
+}
+
+$app->setDefaultCommand('new', false);
+$app->run();
